@@ -32,6 +32,7 @@ Warning categories supported by buildifier's linter:
   * [`list-append`](#list-append)
   * [`load`](#load)
   * [`load-on-top`](#load-on-top)
+  * [`macro-genrule`](#macro-genrule)
   * [`module-docstring`](#module-docstring)
   * [`name-conventions`](#name-conventions)
   * [`native-android`](#native-android)
@@ -581,6 +582,21 @@ If you want to keep the load, you can disable the warning by adding a comment
 
 Load statements should be first statements (with the exception of `WORKSPACE` files),
 they can follow only comments and docstrings.
+
+--------------------------------------------------------------------------------
+
+## <a name="macro-genrule"></a>The rule `native.genrule()` was used from a macro
+
+  * Category name: `macro-genrule`
+  * Automatic fix: no
+  * [Suppress the warning](#suppress): `# buildifier: disable=macro-genrule`
+
+The native `genrule()` rule causes a number of performance issues for Bazel when it
+is used from a macro.  Most commonly, it causes the creation of very large strings
+during the loading phase, which must be kept in memory for the entire Bazel runtime.
+
+Starlark `rule()` definitions are recommended instead, for details see:
+https://bazel.build/extending/rules
 
 --------------------------------------------------------------------------------
 
