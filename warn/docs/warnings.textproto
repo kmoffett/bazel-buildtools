@@ -410,6 +410,15 @@ warnings: {
 }
 
 warnings: {
+  name: "macro-genrule"
+  header: "`native.genrule()` should not be used from macros"
+  description:
+    "Using `native.genrule` in a macro causes memory bloat and other performance problems.\n"
+    "Users should define a `rule()` instead: https://bazel.build/extending/rules"
+  autofix: false
+}
+
+warnings: {
   name: "module-docstring"
   header: "The file has no module docstring"
   description:
