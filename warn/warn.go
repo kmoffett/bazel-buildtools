@@ -145,6 +145,7 @@ var FileWarningMap = map[string]func(f *build.File) []*LinterFinding{
 	"list-append":               listAppendWarning,
 	"load":                      unusedLoadWarning,
 	"load-on-top":               loadOnTopWarning,
+	"macro-genrule":             macroGenruleWarning,
 	"module-docstring":          moduleDocstringWarning,
 	"name-conventions":          nameConventionsWarning,
 	"native-android":            nativeAndroidRulesWarning,
