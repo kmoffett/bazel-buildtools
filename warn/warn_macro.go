@@ -330,3 +330,30 @@ This is important for tooling and automation.
 
 	return findings
 }
+
+func macroGenruleWarning(f *build.File) []*LinterFinding {
+	if f.Type != build.TypeBzl {
+		// Use of the native `genrule()` is still allowed in `BUILD` files, but is strongly discouraged
+		// in `.bzl` files in favor of proper Starlark rules.
+		return nil
+	}
+
+	var findings []*LinterFinding
+	build.WalkPointers(f, func(expr *build.Expr, stack []build.Expr) {
+		// Find nodes that match the following pattern: `native.genrule`
+		dot, ok := (*expr).(*build.DotExpr)
+		if !ok || dot.Name != "genrule" {
+			return
+		}
+		base, ok := dot.X.(*build.Ident)
+		if !ok || base.Name != "native" {
+			return
+		}
+
+		findings = append(findings,
+			makeLinterFinding(dot, fmt.Sprintf(
+				`Using "native.genrule" in a macro causes memory bloat and other performance problems. `+
+					`Please define a "rule()" instead: https://bazel.build/extending/rules`)))
+	})
+	return findings
+}
