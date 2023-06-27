@@ -435,3 +435,17 @@ def macro(name: string = "default"):
 		[]string{},
 		scopeBzl)
 }
+
+func TestMacroGenruleWarning(t *testing.T) {
+	checkFindings(t, "macro-genrule", `
+blah = native.genrule
+
+def f():
+  native.genrule(name = "bad", cmd = "echo Hello world")
+  blah(name = "bad2", cmd = "echo Hello world")
+`, []string{
+		`:1: Using "native.genrule" in a macro causes memory bloat and other performance problems. Please define a "rule()" instead: https://bazel.build/extending/rules`,
+		`:4: Using "native.genrule" in a macro causes memory bloat and other performance problems. Please define a "rule()" instead: https://bazel.build/extending/rules`,
+	},
+		scopeEverywhere)
+}
