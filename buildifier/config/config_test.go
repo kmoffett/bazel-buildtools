@@ -74,6 +74,7 @@ func ExampleExample() {
 	//     "list-append",
 	//     "load",
 	//     "load-on-top",
+	//     "macro-genrule",
 	//     "module-docstring",
 	//     "name-conventions",
 	//     "native-android",
